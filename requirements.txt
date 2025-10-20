@@ -4,5 +4,3 @@ pandas
 numpy
 matplotlib
 scipy
-pandas_datareader
-# rebuild-for-runtime

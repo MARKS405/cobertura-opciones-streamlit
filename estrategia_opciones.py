@@ -44,17 +44,16 @@ def volatilidad_ewma(retornos, lambda_=0.94):
     return np.sqrt(var * 252)
 
 # ===============================
-# 3. Tasa libre de riesgo desde FRED
+# 3. Tasa libre de riesgo estimada desde ETF SHY (1-3Y Treasury)
 # ===============================
-def obtener_rf_fred():
-    hoy = datetime.today()
-    inicio = hoy - timedelta(days=365)
+def obtener_rf_shy():
     try:
-        rf = pdr.DataReader('GS5', 'fred', inicio, hoy)
-        tasa_prom = rf.mean().values[0] / 100
+        shy = yf.download('SHY', period='6mo')
+        retornos = shy['Close'].pct_change().dropna()
+        tasa_anualizada = retornos.mean() * 252  # días hábiles al año
+        return float(tasa_anualizada)
     except:
-        tasa_prom = 0.03  # valor por defecto
-    return tasa_prom
+        return 0.03  # tasa por defecto si falla la descarga
 
 # ===============================
 # 4. Cálculo de precios de opciones (Black–Scholes)
@@ -128,7 +127,7 @@ def evaluar_estrategias(ticker='SPY', monto=1000, dias=90):
     datos = obtener_datos(ticker)
     retornos = datos['Retornos_log'].dropna()
     sigma = volatilidad_ewma(retornos)
-    r = obtener_rf_fred()
+    r = obtener_rf_shy()
     S0 = float(datos['Precio'].iloc[-1])
     T = dias / 252
 

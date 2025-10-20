@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 from scipy.stats import norm
-import pandas_datareader.data as pdr
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import streamlit as st

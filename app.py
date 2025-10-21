@@ -52,7 +52,27 @@ with st.spinner("Simulando precios y evaluando estrategias..."):
     payoffs, resumen, datos, ST = evaluar_estrategias(ticker, monto, dias)
 
 # ============================
-# Sección 1: Métricas
+# Sección 1: Detalles
+# ============================
+st.subheader("📋 Detalles de la estrategia seleccionada")
+detalle_cols = [
+    f"- Strike Put: ${resumen['Strike Put']}",
+    f"- Prima Put: ${resumen['Prima Put']}",
+    f"- Strike Call: ${resumen['Strike Call']}",
+    f"- Prima Call: ${resumen['Prima Call']}"
+]
+
+if estrategia == "Put protectora":
+    st.markdown("\n".join(detalle_cols[:2]))
+elif estrategia == "Collar":
+    st.markdown("\n".join(detalle_cols))
+else:
+    st.info("Esta estrategia no involucra derivados.")
+
+st.caption("Proyecto desarrollado con 🐍 Python, Streamlit, y simulaciones estocásticas.")
+
+# ============================
+# Sección 2: Métricas
 # ============================
 st.subheader("📊 Métricas clave")
 col1, col2, col3 = st.columns(3)
@@ -75,33 +95,13 @@ if estrategia != "Sin cobertura":
     col6.metric("🛡️ Hedge effectiveness", f"{hedge_ratio*100:.2f}%")
 
 # ============================
-# Sección 2: Visualización de precios simulados
+# Sección 3: Visualización de precios simulados
 # ============================
 st.subheader("📈 Distribución de precios simulados")
 graficar_historico_y_simulaciones(datos, ST)
 
 # ============================
-# Sección 3: Gráfico de Payoffs
+# Sección 4: Gráfico de Payoffs
 # ============================
 st.subheader("💥 Distribución de payoff por estrategia")
 graficar_payoffs(payoffs)
-
-# ============================
-# Sección 4: Detalles
-# ============================
-st.subheader("📋 Detalles de la estrategia seleccionada")
-detalle_cols = [
-    f"- Strike Put: ${resumen['Strike Put']}",
-    f"- Prima Put: ${resumen['Prima Put']}",
-    f"- Strike Call: ${resumen['Strike Call']}",
-    f"- Prima Call: ${resumen['Prima Call']}"
-]
-
-if estrategia == "Put protectora":
-    st.markdown("\n".join(detalle_cols[:2]))
-elif estrategia == "Collar":
-    st.markdown("\n".join(detalle_cols))
-else:
-    st.info("Esta estrategia no involucra derivados.")
-
-st.caption("Proyecto desarrollado con 🐍 Python, Streamlit, y simulaciones estocásticas.")

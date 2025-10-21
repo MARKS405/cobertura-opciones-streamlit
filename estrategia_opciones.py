@@ -104,6 +104,9 @@ def calcular_payoffs(S0, ST, T, r, sigma):
         'Collar': collar
     })
 
+    ajuste = monto / S0
+    resultados *= ajuste
+
     resumen = {
         'Spot': S0,
         'Strike Put': round(K_put, 2),
@@ -132,9 +135,8 @@ def evaluar_estrategias(ticker='SPY', monto=1000, dias=90):
 
     ST = simular_trayectorias_MB(S0, T, r, sigma, pasos=dias, n_sim=10000) # Use dias as pasos and increase n_sim
     payoffs, resumen = calcular_payoffs(S0, ST, T, r, sigma)
-    payoffs_usd = payoffs * (monto / S0)
-
-    return payoffs_usd, resumen, datos, ST
+    
+    return payoffs, resumen, datos, ST
 
 # ===============================
 # 8. Visualización de resultados

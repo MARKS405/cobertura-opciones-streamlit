@@ -69,8 +69,6 @@ elif estrategia == "Collar":
 else:
     st.info("Esta estrategia no involucra derivados.")
 
-st.caption("Proyecto desarrollado con 🐍 Python, Streamlit, y simulaciones estocásticas.")
-
 # ============================
 # Sección 2: Métricas
 # ============================
@@ -105,3 +103,5 @@ graficar_historico_y_simulaciones(datos, ST)
 # ============================
 st.subheader("💥 Distribución de payoff por estrategia")
 graficar_payoffs(payoffs)
+
+st.caption("Proyecto desarrollado con 🐍 Python, Streamlit, y simulaciones estocásticas.")

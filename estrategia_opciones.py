@@ -82,7 +82,7 @@ def simular_trayectorias_MB(S0, T, r, sigma, pasos=90, n_sim=1000):
 # ===============================
 # 6. Cálculo de payoff por estrategia
 # ===============================
-def calcular_payoffs(S0, ST, T, r, sigma):
+def calcular_payoffs(S0, ST, T, r, sigma, monto):
     if ST.ndim > 1:
         ST = ST[:, -1]
     K_put = S0 * 0.95
@@ -134,7 +134,7 @@ def evaluar_estrategias(ticker='SPY', monto=1000, dias=90):
     T = dias / 252
 
     ST = simular_trayectorias_MB(S0, T, r, sigma, pasos=dias, n_sim=10000) # Use dias as pasos and increase n_sim
-    payoffs, resumen = calcular_payoffs(S0, ST, T, r, sigma)
+    payoffs, resumen = calcular_payoffs(S0, ST, T, r, sigma, monto)
     
     return payoffs, resumen, datos, ST
 

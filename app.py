@@ -77,7 +77,7 @@ col1, col2, col3 = st.columns(3)
 
 estrat = estrategia
 
-col1.metric("🔻 VaR al 5%", f"${resumen['VaR 5%'][estrat]:,.2f}")
+col1.metric("🔻 VaR al 95%", f"${resumen['VaR 5%'][estrat]:,.2f}")
 col2.metric("📈 Rentabilidad esperada", f"${resumen['Rentabilidad esperada'][estrat]:,.2f}")
 col3.metric("💰 Spot actual", f"${resumen['Spot']:,.2f}")
 

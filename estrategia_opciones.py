@@ -70,7 +70,7 @@ def black_scholes_put(S, K, T, r, sigma):
 # ===============================
 # 5. Simulación de precios futuros (GBM)
 # ===============================
-def simular_trayectorias_MB(S0, T, r, sigma, pasos=90, n_sim=1000):
+def simular_trayectorias_MB(S0, T, r, sigma, pasos=90, n_sim=10000):
     dt = T / pasos
     drift = (r - 0.5 * sigma**2) * dt
     shock = sigma * np.sqrt(dt) * np.random.randn(n_sim, pasos)

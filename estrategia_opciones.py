@@ -27,10 +27,41 @@ plt.rcParams.update({
 # ===============================
 def obtener_datos(ticker, dias_horizonte=90, ventana_vol=252*3):
     hoy = datetime.today()
-    inicio = hoy - timedelta(days=ventana_vol * 1.5)
-    datos = yf.download(ticker, start=inicio, end=hoy, progress=False)['Close']
-    datos.rename(columns={'Close': 'Precio'}, inplace=True)
+    inicio = hoy - timedelta(days=int(ventana_vol * 1.5))
+
+    raw = yf.download(
+        ticker,
+        start=inicio,
+        end=hoy,
+        progress=False,
+        auto_adjust=False,
+        threads=False
+    )
+
+    if raw is None or raw.empty:
+        raise ValueError(f"No se pudieron descargar datos para {ticker}.")
+
+    if isinstance(raw.columns, pd.MultiIndex):
+        if 'Close' in raw.columns.get_level_values(0):
+            close = raw['Close']
+            if isinstance(close, pd.Series):
+                datos = close.to_frame(name='Precio')
+            else:
+                datos = close.iloc[:, [0]].copy()
+                datos.columns = ['Precio']
+        else:
+            raise ValueError(f"No se encontró 'Close' para {ticker}.")
+    else:
+        if 'Close' not in raw.columns:
+            raise ValueError(f"No se encontró la columna 'Close' para {ticker}.")
+        datos = raw[['Close']].copy()
+        datos.columns = ['Precio']
+
     datos.dropna(inplace=True)
+
+    if datos.empty:
+        raise ValueError(f"La serie de precios quedó vacía para {ticker}.")
+
     datos['Retornos_log'] = np.log(datos['Precio'] / datos['Precio'].shift(1))
     return datos
 

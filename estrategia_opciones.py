@@ -28,8 +28,9 @@ plt.rcParams.update({
 def obtener_datos(ticker, dias_horizonte=90, ventana_vol=252*3):
     hoy = datetime.today()
     inicio = hoy - timedelta(days=ventana_vol * 1.5)
-    datos = yf.download(ticker, start=inicio, end=hoy, progress=False)
-    datos = datos[['Close']].dropna().rename(columns={'Close': 'Precio'})
+    datos = yf.download(ticker, start=inicio, end=hoy, progress=False)['Close']
+    datos.rename(columns={'Close': 'Precio'}, inplace=True)
+    datos.dropna(inplace=True)
     datos['Retornos_log'] = np.log(datos['Precio'] / datos['Precio'].shift(1))
     return datos
 
